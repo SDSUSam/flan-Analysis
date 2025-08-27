@@ -445,15 +445,6 @@ class DiffusionPlot:
 
         plt.show()
 
-
-    """
-    This class is used to compile instances of diffusionPlot!
-    
-    The overall goal is to make a plot of the fit argument vs. the 
-    Z number. This will require me to make instances of the netCDF 
-    file, make new objects, and fit the curve to their data. 
-    """
-
     def get_data(self,frame_index):
         """
         Helper function to place all of the radial density averages
@@ -688,8 +679,6 @@ class DiffusionPlot:
 
 
         return 1/m
-
-
 
 class MoneyPlot:
     """
