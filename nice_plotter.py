@@ -74,6 +74,11 @@ class A:
         This is the actual data created by the simulations and scripts. 
         Nothing more, nothing less!
 
+        The user can specify if they want collisional or collisionless data. 
+        Additionally, you can specify if you want to get the data for a different fit, one that cuts off
+        the fitted domain more to exclude the areas where non-collisional simulations never reach equilibrium. 
+
+        This is scientifically dishonest to do so - but useful to see what the data is doing. 
         """
         if collisionality=="n":
             z_array = [3,5, 6, 7,8, 10, 26, 42, 54, 74]
