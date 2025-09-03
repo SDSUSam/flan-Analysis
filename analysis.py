@@ -141,7 +141,7 @@ class DiffusionPlot:
         
         # Back substitution
         for j in range(n):
-            i = n - 1 - j  # Equivalent to reversed index: j = 0 → i = n-1 \. 
+            i = n - 1 - j  # Equivalent to reversed index: j = 0 → i = n-1 
             c[i] = z[i] - u[i] * c[i + 1]
             b[i] = (a[i + 1] - a[i]) / h[i] - h[i] * (c[i + 1] + 2 * c[i]) / 3
             d[i] = (c[i + 1] - c[i]) / (3 * h[i])
@@ -586,13 +586,13 @@ class DiffusionPlot:
         if plot=="linear":
             plt.figure(figsize=(8, 6))
 
-            # Fit line - bold contrasting color
+            # Plot of the actual data
             plt.plot(cut_x, cut_y,                   
                      label='Fit',
                      color='royalblue',
                      linewidth=4.5)
 
-            # Scatter points - more striking color
+            # Scatter points for the fit function
             plt.scatter(cut_x, lin_fit(cut_x, *popt), 
                         label='Data', 
                         color='darkorange', 
@@ -601,7 +601,7 @@ class DiffusionPlot:
                         s=60, 
                         alpha=0.85)
 
-            # Labels with bigger font
+            # Some font parameters
             plt.xlabel(r"$R - R_{\text{sep}}$ [m]", fontsize=20)
             plt.ylabel(r"ln(n$_W$) arb", fontsize=20)
 
@@ -610,7 +610,7 @@ class DiffusionPlot:
             ax.spines['top'].set_visible(False)
             ax.spines['right'].set_visible(False)
 
-            # Tick labels larger
+            # Tick labels and the sort
             plt.tick_params(axis='both', which='major', labelsize=16, direction='in', length=6, width=1.2)
             plt.tick_params(axis='both', which='minor', labelsize=14, direction='in', length=3, width=1)
 
@@ -632,7 +632,6 @@ class DiffusionPlot:
                 # Return error if zero in y data
                 if (0 in y): print("Error! Can't fit if y contains zeros")
 
-                # Natural log of data
                 ln_y=self.lnIt(y)
                 
                 # Linear regression ln(y) = bx + ln(a)
@@ -646,28 +645,28 @@ class DiffusionPlot:
                 return x, a_fit * np.exp(b_fit * x)
 
 
-            # Data - bold contrasting color
+            # Data plot
             plt.plot(cut_x, cut_it(self.data_fit_20_avg()),                   
                      label='Data',
                      color='royalblue',
                      linewidth=4.5)
 
-            # Fit - more striking color
+            # Fit plot
             plt.plot(get_decay_length(self.x, 0.05+2.259, 0.08+2.259, self.data_fit_20_avg()),
                         linestyle='--',
                         label='Fit',
                         color='darkorange')
 
-            # Labels with bigger font
+            # Label parameters
             plt.xlabel(r"$R - R_{\text{sep}}$ [m]", fontsize=20)
             plt.ylabel(r"ln(n$_W$) arb", fontsize=20)
 
-            # Remove top and right spines
+            # Remove top and right spines again
             ax = plt.gca()
             ax.spines['top'].set_visible(False)
             ax.spines['right'].set_visible(False)
 
-            # Tick labels larger
+            # Tick params. Change as necessary, but these work fine. 
             plt.tick_params(axis='both', which='major', labelsize=16, direction='in', length=6, width=1.2)
             plt.tick_params(axis='both', which='minor', labelsize=14, direction='in', length=3, width=1)
 
@@ -779,12 +778,12 @@ class MoneyPlot:
             - Plot of Z vs. lambda
         """
 
-
+        # Initialize the arrays to be used. Just up to Z=74 for now. 
         z_array = np.arange(0,75)
         lambda_array_nc = np.zeros(75)
         lambda_array_n = np.zeros(75)
         
-
+        # Set values for the non-collisional inward transport coefficient sims
         lambda_array_nc[4] = self.mp_boron_nc.data_fit(  "linear", nanbu_fitting)
         lambda_array_nc[5] = self.mp_carbon_nc.data_fit(  "linear",nanbu_fitting )
         lambda_array_nc[6] = self.mp_nitrogen_nc.data_fit( "linear", nanbu_fitting)
@@ -796,7 +795,7 @@ class MoneyPlot:
         
 
 
-
+        # Collisional (n=nanbu) values for the various impurities. 
         lambda_array_n[2] = self.mp_lithium_n.data_fit(  "linear", nanbu_fitting)
         lambda_array_n[4] = self.mp_boron_n.data_fit(  "linear", nanbu_fitting)
         lambda_array_n[5] = self.mp_carbon_n.data_fit(  "linear", nanbu_fitting)
@@ -809,17 +808,17 @@ class MoneyPlot:
         lambda_array_n[73] = self.mp_tungsten_n.data_fit( "linear", nanbu_fitting)
 
 
-
+        # Take the non-zero inward transport coefficients
         filteredZ_n, _ = self.filtered_points(z_array, lambda_array_n)
         filteredZ_nc, _ = self.filtered_points(z_array, lambda_array_nc)
         _, filteredY_nc = self.filtered_points(z_array,lambda_array_nc)
         _, filteredY_n = self.filtered_points(z_array, lambda_array_n)
         
-
+        # Plot those jokers
         plt.plot(filteredZ_nc, filteredY_nc, label = 'Collisionless', color='blue')
         plt.plot(filteredZ_n, filteredY_n, label = 'Collisional', color = 'red')
 
-
+        # Give it a name
         plt.title('Log of Density fit argument vs. impurity Z number')
         plt.xlabel("Impurity Z number")
         plt.ylabel("Exponential argument lambda=ln(1/b)")
